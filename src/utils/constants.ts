@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 // API Endpoints
 export const API_ENDPOINTS = Object.freeze({
@@ -6,7 +6,7 @@ export const API_ENDPOINTS = Object.freeze({
         LOGIN: `${API_BASE_URL}/auth/login`,
         VERIFY_USER: `${API_BASE_URL}/auth/verify-user`,
         LOGOUT: `${API_BASE_URL}/auth/logout`,
-        REGISTER: `${API_BASE_URL}/auth/register`, // If user registration is needed
+        REGISTER: `${API_BASE_URL}/auth/register`,
     },
     ELECTIONS: {
         BASE: `${API_BASE_URL}/elections`,
@@ -28,7 +28,7 @@ export const API_ENDPOINTS = Object.freeze({
     },
     NOTIFICATIONS: {
         HEALTH: `${API_BASE_URL}/health-notifications`,
-        EMAIL: `${API_BASE_URL}/notifications/email`, // For SendGrid or Resend
+        EMAIL: `${API_BASE_URL}/notifications/email`,
     },
     ACADEMIC: {
         INTEGRITY: `${API_BASE_URL}/academic-integrity`,
@@ -38,14 +38,14 @@ export const API_ENDPOINTS = Object.freeze({
         STATUS_UPDATE: `${API_BASE_URL}/applications/status`,
     },
     FILE_UPLOAD: {
-        IMAGE_UPLOAD: `https://api.cloudinary.com/v1_1/your-cloud-name/image/upload`, // Cloudinary
+        IMAGE_UPLOAD: `https://api.cloudinary.com/v1_1/your-cloud-name/image/upload`,
         FILE_UPLOAD: `https://api.cloudinary.com/v1_1/your-cloud-name/raw/upload`,
     },
     REALTIME: {
-        SOCKET: `${API_BASE_URL}/realtime`, // Socket.io endpoint
+        SOCKET: `${API_BASE_URL}/realtime`,
     },
     PAYMENTS: {
-        RAZORPAY: `${API_BASE_URL}/payments/razorpay`, // If using Razorpay
-        STRIPE: `${API_BASE_URL}/payments/stripe`, // If using Stripe
+        RAZORPAY: `${API_BASE_URL}/payments/razorpay`,
+        STRIPE: `${API_BASE_URL}/payments/stripe`,
     },
 });
