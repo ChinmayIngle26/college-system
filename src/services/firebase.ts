@@ -1,3 +1,48 @@
+// // Import the functions you need from the SDKs you need
+
+// import { initializeApp, getApps, getApp } from "firebase/app";
+
+// import { getAnalytics } from "firebase/analytics";
+
+// import { getAuth } from "firebase/auth";
+
+// // Your web app's Firebase configuration
+
+// const firebaseConfig = {
+
+//   apiKey: "AIzaSyD4KSBTh3INwyG9RwZUJ3fcyHkiThGw1R4",
+
+//   authDomain: "college-system-61294.firebaseapp.com",
+
+//   projectId: "college-system-61294",
+
+//   storageBucket: "college-system-61294.appspot.com", // ✅ Fixed
+
+//   messagingSenderId: "146748708139",
+
+//   appId: "1:146748708139:web:aef11557fc01ccb753216e",
+
+//   measurementId: "G-3V0M7FHSVX",
+
+// };
+
+// // Initialize Firebase
+
+// const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+
+// const auth = getAuth(app);
+
+// // Initialize Analytics only in browser
+
+// let analytics;
+
+// if (typeof window !== "undefined") {
+
+//   analytics = getAnalytics(app);
+
+// }
+
+// export { auth, analytics };
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -11,7 +56,8 @@ const firebaseConfig = {
   apiKey: "AIzaSyD4KSBTh3INwyG9RwZUJ3fcyHkiThGw1R4",
   authDomain: "college-system-61294.firebaseapp.com",
   projectId: "college-system-61294",
-  storageBucket: "college-system-61294.firebasestorage.app",
+  storageBucket: "college-system-61294.appspot.com",
+//   storageBucket: "college-system-61294.firebasestorage.app",
   messagingSenderId: "146748708139",
   appId: "1:146748708139:web:aef11557fc01ccb753216e",
   measurementId: "G-3V0M7FHSVX"

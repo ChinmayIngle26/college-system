@@ -1,7 +1,119 @@
+/* src/styles.css */
+
+/* Resetting some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Body styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-  }
-  
+  background-color: rgb(234, 234, 255); /* Lavish light purple background */
+  color: #333; /* Dark text for readability */
+  line-height: 1.6;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height */
+  margin: 0;
+}
+
+/* Styling headers globally */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #1f2937; /* Darker shade for headings */
+  margin-bottom: 15px;
+}
+
+/* Form container centered with clean layout */
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh; /* Full height */
+}
+
+/* Box that contains the signup form */
+.form-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px; /* Smoother corners */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px; /* Form will not exceed 400px in width */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Heading for the form */
+h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Input field styling */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+input:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+/* Button styling with smooth edges and custom color */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: rgb(132, 0, 255); /* Lavish purple background */
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px; /* Smoother edges */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease;
+}
+
+button:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: rgb(120, 0, 230); /* Slightly darker shade for hover */
+  transform: translateY(-2px); /* Button lifts on hover */
+}
+
+button:active {
+  background-color: rgb(100, 0, 200); /* Even darker shade on click */
+  transform: translateY(2px); /* Button presses down on click */
+}
+
+/* Styling for the login link */
+.login-link {
+  margin-top: 20px;
+}
+
+.login-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
