@@ -10,7 +10,7 @@ const ApplicationApprovalSystem = () => {
     }
     
     const [applications, setApplications] = useState<Application[]>([]);
-    const [newApplication, setNewApplication] = useState({ title: '', description: '' });
+    const [newApplication, setNewApplication] = useState({ title: '', description: '', applicantName: '', applicantEmail: '', applicationDetails: '' });
 
     useEffect(() => {
         const loadApplications = async () => {
@@ -28,7 +28,7 @@ const ApplicationApprovalSystem = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         await submitApplication(newApplication);
-        setNewApplication({ title: '', description: '' });
+        setNewApplication({ title: '', description: '', applicantName: '', applicantEmail: '', applicationDetails: '' });
         const data = await fetchApplications();
         setApplications(data);
     };
@@ -56,6 +56,29 @@ const ApplicationApprovalSystem = () => {
                     value={newApplication.description}
                     onChange={handleInputChange}
                     placeholder="Application Description"
+                    required
+                />
+                <input
+                    type="text"
+                    name="applicantName"
+                    value={newApplication.applicantName}
+                    onChange={handleInputChange}
+                    placeholder="Applicant Name"
+                    required
+                />
+                <input
+                    type="email"
+                    name="applicantEmail"
+                    value={newApplication.applicantEmail}
+                    onChange={handleInputChange}
+                    placeholder="Applicant Email"
+                    required
+                />
+                <textarea
+                    name="applicationDetails"
+                    value={newApplication.applicationDetails}
+                    onChange={handleInputChange}
+                    placeholder="Application Details"
                     required
                 />
                 <button type="submit">Submit Application</button>

@@ -18,7 +18,7 @@ const AnonymousComplaintSystem = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (newComplaint.trim()) {
-            const complaintData = { title: 'Anonymous', description: newComplaint, content: newComplaint }; // Assuming ComplaintData has 'title', 'description', and 'content' fields
+            const complaintData = { title: 'Anonymous', description: newComplaint, content: newComplaint, anonymous: true }; // Assuming ComplaintData has 'title', 'description', 'content', and 'anonymous' fields
             await submitComplaint(complaintData);
             setNewComplaint('');
             const updatedComplaints = await fetchComplaints();
