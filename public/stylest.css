@@ -1,0 +1,122 @@
+/* ========== Global Styling ========== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f4f9;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    line-height: 1.8;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    background: #003f7f;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: width 0.3s ease-in-out;
+    border-radius: 0 15px 15px 0;
+  }
+  
+  .sidebar:hover {
+    width: 350px; /* Expand sidebar on hover */
+  }
+  
+  /* Sidebar Items */
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-size: 18px;
+    position: relative;
+  }
+  
+  .sidebar-item:hover {
+    background-color: #005eff;
+    transform: translateX(10px);
+  }
+  
+  .sidebar-item:hover .sidebar-info {
+    opacity: 1;
+    transform: translateX(0); /* Show information on hover */
+  }
+  
+  /* Sidebar Item Info Tooltip */
+  .sidebar-info {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%) translateX(20px);
+    opacity: 0;
+    background: #003f7f;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 14px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    visibility: hidden;
+  }
+  
+  /* Main Content */
+  .main-content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidebar:hover + .main-content {
+    margin-left: 350px; /* Adjust main content when sidebar is expanded */
+  }
+  
+  /* Hover effects for each sidebar item */
+  .sidebar-item-1:hover .sidebar-info {
+    content: 'Dashboard Overview'; /* Tooltip Text */
+  }
+  
+  .sidebar-item-2:hover .sidebar-info {
+    content: 'View Reports'; /* Tooltip Text */
+  }
+  
+  .sidebar-item-3:hover .sidebar-info {
+    content: 'Manage Users'; /* Tooltip Text */
+  }
+  
+  .sidebar-item-4:hover .sidebar-info {
+    content: 'Settings'; /* Tooltip Text */
+  }
+  
+  /* Additional Styles for the sidebar */
+  .sidebar-item i {
+    margin-right: 15px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 200px;
+    }
+  
+    .main-content {
+      margin-left: 200px;
+    }
+  
+    .sidebar-item {
+      font-size: 16px;
+    }
+  
+    .sidebar-info {
+      font-size: 12px;
+    }
+  }
+  
