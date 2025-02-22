@@ -1,143 +1,265 @@
-// import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-//  import { auth } from "../services/firebase";
+ import { auth, db } from "../services/firebase"; // ✅ Import Firestore instance
 
-//  import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth";
+ import {
+
+   createUserWithEmailAndPassword,
+
+   signInWithEmailAndPassword,
+
+   signOut,
+
+   onAuthStateChanged,
+
+   User,
+
+ } from "firebase/auth";
+
+ import { doc, setDoc, getDoc } from "firebase/firestore"; // ✅ Firestore functions
  
-// // Create Auth Context
+// Create Auth Context
 
-//  const AuthContext = createContext<any>(null);
+ const AuthContext = createContext<any>(null);
  
-// export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
-//    const [currentUser, setCurrentUser] = useState<User | null>(null);
+   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-//    const [loading, setLoading] = useState(true); // ✅ Prevent blank page by tracking loading state
+   const [userData, setUserData] = useState<any>(null);
+
+   const [loading, setLoading] = useState(true);
  
-//   useEffect(() => {
+  useEffect(() => {
 
-//      const unsubscribe = onAuthStateChanged(auth, (user) => {
+     const unsubscribe = onAuthStateChanged(auth, async (user) => {
 
-//        setCurrentUser(user);
+       setCurrentUser(user);
 
-//        setLoading(false); // ✅ Set loading to false once auth state is checked
+       if (user) {
 
-//      });
+         await fetchUserData(user.uid); // ✅ Fetch user data when auth state changes
 
-//      return () => unsubscribe();
+       } else {
 
-//    }, []);
+         setUserData(null);
+
+       }
+
+       setLoading(false);
+
+     });
  
-//   const signup = (email: string, password: string) => {
+    return () => unsubscribe();
 
-//      return createUserWithEmailAndPassword(auth, email, password);
-
-//    };
+   }, []);
  
-//   const login = (email: string, password: string) => {
+  // ✅ Function to Fetch User Data from Firestore
 
-//      return signInWithEmailAndPassword(auth, email, password);
+   const fetchUserData = async (uid: string) => {
 
-//    };
+     try {
+
+       const docRef = doc(db, "users", uid);
+
+       const docSnap = await getDoc(docRef);
+
+       if (docSnap.exists()) {
+
+         setUserData(docSnap.data());
+
+       } else {
+
+         setUserData(null);
+
+       }
+
+     } catch (error) {
+
+       console.error("Error fetching user data:", error);
+
+     }
+
+   };
  
-//   const logout = () => {
+  // ✅ Updated Signup Function to Store Name & Registration Number
 
-//      return signOut(auth);
+   const signup = async (email: string, password: string, name: string, registrationNumber: string) => {
 
-//    };
+     try {
+
+       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+       const user = userCredential.user;
  
-//   return (
-// <AuthContext.Provider value={{ currentUser, signup, login, logout }}>
+      // 🔹 Store Additional Data in Firestore
 
-//        {!loading && children} {/* ✅ Prevents blank page by rendering only after auth check */}
-// </AuthContext.Provider>
+       await setDoc(doc(db, "users", user.uid), {
 
-//    );
+         uid: user.uid,
 
-//  };
+         name,
+
+         email,
+
+         registrationNumber,
+
+         createdAt: new Date(),
+
+       });
  
-// // Hook to Use Auth
+      // ✅ Fetch user data immediately after signup
 
-//  export const useAuth = () => {
+       await fetchUserData(user.uid);
+ 
+      return user;
 
-//    return useContext(AuthContext);
+     } catch (error) {
 
-//  };
+       console.error("Signup Error:", error);
+
+       throw error;
+
+     }
+
+   };
+ 
+  const login = async (email: string, password: string) => {
+
+     try {
+
+       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+       const user = userCredential.user;
+ 
+      // ✅ Fetch user data immediately after login
+
+       await fetchUserData(user.uid);
+ 
+      return user;
+
+     } catch (error) {
+
+       console.error("Login Error:", error);
+
+       throw error;
+
+     }
+
+   };
+ 
+  const logout = async () => {
+
+     try {
+
+       await signOut(auth);
+
+       setCurrentUser(null);
+
+       setUserData(null); // ✅ Clear user data on logout
+
+     } catch (error) {
+
+       console.error("Logout Error:", error);
+
+       throw error;
+
+     }
+
+   };
+ 
+  return (
+<AuthContext.Provider value={{ currentUser, userData, signup, login, logout }}>
+
+       {loading ? <p>Loading...</p> : children} {/* ✅ Prevent UI flicker while loading */}
+</AuthContext.Provider>
+
+   );
+
+ };
+ 
+// Hook to Use Auth
+
+ export const useAuth = () => {
+
+   return useContext(AuthContext);
+
+ };
 
 //----------------------------------------------------------------
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { auth, db } from "../services/firebase"; // ✅ Import Firestore instance
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  User,
-} from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore"; // ✅ Firestore functions
+// import React, { createContext, useContext, useState, useEffect } from "react";
+// import { auth, db } from "../services/firebase"; // ✅ Import Firestore instance
+// import {
+//   createUserWithEmailAndPassword,
+//   signInWithEmailAndPassword,
+//   signOut,
+//   onAuthStateChanged,
+//   User,
+// } from "firebase/auth";
+// import { doc, setDoc, getDoc } from "firebase/firestore"; // ✅ Firestore functions
 
-// Create Auth Context
-const AuthContext = createContext<any>(null);
+// // Create Auth Context
+// const AuthContext = createContext<any>(null);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [userData, setUserData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+// export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+//   const [currentUser, setCurrentUser] = useState<User | null>(null);
+//   const [userData, setUserData] = useState<any>(null);
+//   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
-      if (user) {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
-        }
-      }
-      setLoading(false);
-    });
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+//       setCurrentUser(user);
+//       if (user) {
+//         const docRef = doc(db, "users", user.uid);
+//         const docSnap = await getDoc(docRef);
+//         if (docSnap.exists()) {
+//           setUserData(docSnap.data());
+//         }
+//       }
+//       setLoading(false);
+//     });
 
-    return () => unsubscribe();
-  }, []);
+//     return () => unsubscribe();
+//   }, []);
 
-  // ✅ Updated Signup Function to Store Name & Registration Number
-  const signup = async (email: string, password: string, name: string, registrationNumber: string) => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+//   // ✅ Updated Signup Function to Store Name & Registration Number
+//   const signup = async (email: string, password: string, name: string, registrationNumber: string) => {
+//     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+//     const user = userCredential.user;
 
-    // 🔹 Store Additional Data in Firestore
-    await setDoc(doc(db, "users", user.uid), {
-      uid: user.uid,
-      name,
-      email,
-      registrationNumber,
-      createdAt: new Date(),
-    });
+//     // 🔹 Store Additional Data in Firestore
+//     await setDoc(doc(db, "users", user.uid), {
+//       uid: user.uid,
+//       name,
+//       email,
+//       registrationNumber,
+//       createdAt: new Date(),
+//     });
 
-    return user;
-  };
+//     return user;
+//   };
 
-  const login = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password);
-  };
+//   const login = (email: string, password: string) => {
+//     return signInWithEmailAndPassword(auth, email, password);
+//   };
 
-  const logout = () => {
-    setUserData(null); // Clear user data on logout
-    return signOut(auth);
-  };
+//   const logout = () => {
+//     setUserData(null); // Clear user data on logout
+//     return signOut(auth);
+//   };
 
-  return (
-    <AuthContext.Provider value={{ currentUser, userData, signup, login, logout }}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
-};
+//   return (
+//     <AuthContext.Provider value={{ currentUser, userData, signup, login, logout }}>
+//       {!loading && children}
+//     </AuthContext.Provider>
+//   );
+// };
 
-// Hook to Use Auth
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+// // Hook to Use Auth
+// export const useAuth = () => {
+//   return useContext(AuthContext);
+// };
 
 
 // import { createContext, useContext, useState, useEffect } from "react";

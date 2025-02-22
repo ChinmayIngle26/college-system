@@ -82,7 +82,7 @@ const App: React.FC = () => {
         <Route path="/election" element={<ElectionSystem />} />
         <Route path="/candidate-form" element={<CandidateForm />} /> {/* Add Candidate Form route */}
         <Route path="/apply-candidate" element={<CandidateForm />} />
-        <Route path="/health-leave" element={<HealthLeaveNotifications />} />
+        <Route path="/health-leave" element={<HealthLeaveNotifications userEmail="user@example.com" />} />
         <Route path="/facility-booking" element={<FacilityBookingSystem />} />
         <Route path="/application-approval" element={<ApplicationApprovalSystem />} />
         <Route path="/academic-integrity" element={<AcademicIntegritySystem />} />
