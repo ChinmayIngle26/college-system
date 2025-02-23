@@ -1,3 +1,4 @@
+import "../../public/login.css"; 
 import React, { useState } from "react"; // ✅ Import useState
 import { useAuth } from "../context/AuthContext"; // ✅ Correct path for useAuth
 import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate

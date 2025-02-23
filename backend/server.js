@@ -87,6 +87,7 @@
 
 // app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 
+
 import express from "express";
 
  import cors from "cors";
@@ -101,19 +102,9 @@ const app = express();
 
  const PORT = process.env.PORT || 5001;
  
-// ✅ Enable CORS for all routes
-
- app.use(cors({
-
-     origin: "*", // Allow all origins (change this to your frontend URL for security)
-
-     methods: "GET,POST,PUT,DELETE",
-
-     allowedHeaders: "Content-Type,Authorization"
-
- }));
- 
 app.use(express.json());
+
+ app.use(cors());
  
 // ✅ Ensure Email Credentials are Loaded
 
@@ -176,6 +167,106 @@ app.use(express.json());
      } catch (error) {
 
          console.error("❌ Error sending email:", error.message);
+
+         res.status(500).json({ error: error.message });
+
+     }
+
+ });
+ 
+// 📢 **API for Sending Health Notifications**
+
+ app.post("/send-health-notification", async (req, res) => {
+
+     console.log("🏥 Health notification request received:", req.body);
+ 
+    const { studentEmail, classCoordinatorEmail, studentName } = req.body;
+
+     if (!studentEmail || !classCoordinatorEmail || !studentName) {
+
+         return res.status(400).json({ error: "Missing required fields: studentEmail, classCoordinatorEmail, studentName." });
+
+     }
+ 
+    try {
+
+         // ✅ Send email to the Coordinator
+
+         let coordinatorInfo = await transporter.sendMail({
+
+             from: process.env.EMAIL_USER,
+
+             to: classCoordinatorEmail,
+
+             subject: "Health Notification",
+
+             text: `${studentName} has been reported sick. Please take necessary actions.`,
+
+         });
+ 
+        // ✅ Send email to the Student as Proof
+
+         let studentInfo = await transporter.sendMail({
+
+             from: process.env.EMAIL_USER,
+
+             to: studentEmail,
+
+             subject: "Copy of Your Health Notification",
+
+             text: `Dear ${studentName},\n\nThis is a copy of the health notification sent to your coordinator (${classCoordinatorEmail}).\n\nKeep this for your records.`,
+
+         });
+ 
+        console.log("✅ Health notification sent to Coordinator & Student");
+
+         res.status(200).json({ message: "Health notification sent!" });
+
+     } catch (error) {
+
+         console.error("❌ Error sending health notification:", error.message);
+
+         res.status(500).json({ error: error.message });
+
+     }
+
+ });
+ 
+// 🚪 **API for Sending Leave Notifications**
+
+ app.post("/send-leave-notification", async (req, res) => {
+
+     console.log("🚪 Leave notification request received:", req.body);
+ 
+    const { parentEmail, studentName } = req.body;
+
+     if (!parentEmail || !studentName) {
+
+         return res.status(400).json({ error: "Missing required fields: parentEmail, studentName." });
+
+     }
+ 
+    try {
+
+         let info = await transporter.sendMail({
+
+             from: process.env.EMAIL_USER,
+
+             to: parentEmail,
+
+             subject: "Leave Notification",
+
+             text: `${studentName} has left campus. Please be informed for safety tracking.`,
+
+         });
+ 
+        console.log("✅ Leave notification sent:", info.response);
+
+         res.status(200).json({ message: "Leave notification sent!" });
+
+     } catch (error) {
+
+         console.error("❌ Error sending leave notification:", error.message);
 
          res.status(500).json({ error: error.message });
 

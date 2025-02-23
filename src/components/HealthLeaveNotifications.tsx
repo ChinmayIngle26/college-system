@@ -48,6 +48,7 @@
 
 import { useState, useEffect } from "react";
 import { applyForLeave, getLeaveStatus } from "../services/leaveService";
+import "../../public/leave.css"; 
 
 const LeaveApplication = ({ userEmail }: { userEmail: string }) => {
     const [duration, setDuration] = useState("");
